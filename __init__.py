@@ -1,36 +1,33 @@
 from cryptography.fernet import Fernet
-from flask import Flask, render_template, jsonify
-from flask import render_template
+from flask import Flask, rendertemplatestring, rendertemplate, jsonify
+from flask import rendertemplate
 from flask import json
 from urllib.request import urlopen
 import sqlite3
 
-app = Flask(__name__)
-
-# Clé générée pour chiffrer et déchiffrer
-key = Fernet.generate_key()
-f = Fernet(key)
+app = Flask(name)
 
 @app.route('/')
 def hello_world():
-    return render_template('hello.html')
+    return render_template('hello.html') 
 
-# Route d'encryptage
+key = Fernet.generate_key() #sss
+f = Fernet(key)
+
 @app.route('/encrypt/<string:valeur>')
 def encryptage(valeur):
     valeur_bytes = valeur.encode()  # Conversion str -> bytes
     token = f.encrypt(valeur_bytes)  # Encrypt la valeur
     return f"Valeur encryptée : {token.decode()}"  # Retourne le token en str
 
-# Route de décryptage
-@app.route('/decrypt/<string:valeur>')
-def decryptage(valeur):
+@app.route('/decrypt/<string:token>')
+def decryptage(token):
     try:
-        valeur_bytes = valeur.encode()  # Conversion str -> bytes
-        valeur_decryptee = f.decrypt(valeur_bytes).decode()  # Décryptage
-        return f"Valeur décryptée : {valeur_decryptee}"  # Retourne la valeur décryptée en str
+        token_bytes = token.encode()  # Conversion str -> bytes
+        valeur = f.decrypt(token_bytes)  # Décrypte le token
+        return f"Valeur décryptée : {valeur.decode()}"  # Retourne la valeur en str
     except Exception as e:
-        return f"Erreur lors du décryptage : {str(e)}"  # En cas d'erreur
+        return f"Erreur de décryptage : {str(e)}"
 
-if __name__ == "__main__":
-    app.run(debug=True)
+if __name == "__main":
+  app.run(debug=True)

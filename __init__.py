@@ -48,6 +48,11 @@ def ex3():
 def ex4():
     return render_template('exercice4.html') 
 
-@app.route('/Exercice5')
-def ex5():
-    return render_template('exercice5.html') 
+@app.route('/sommaire')
+def som():
+    return render_template('sommaire.html') 
+
+@app.route('/accueil')
+def acu():
+    return render_template('accueil.html')
+

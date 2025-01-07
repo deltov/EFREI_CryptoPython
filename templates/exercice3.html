@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercice 3 : Formulaire</title>
+</head>
+<body>
+    <h2>Un formulaire avec plein de choses !</h2>
+    <form action="#" method="post">
+        <!-- Champ pseudo -->
+        <p>
+            <label for="pseudo">Votre pseudo :</label>
+            <input type="text" id="pseudo" name="pseudo">
+        </p>
+
+        <!-- Champ mot de passe -->
+        <p>
+            <label for="password">Votre mot de passe :</label>
+            <input type="password" id="password" name="password">
+        </p>
+
+        <!-- Champ confirmation mot de passe -->
+        <p>
+            <label for="confirm_password">Ressaisir votre mot de passe :</label>
+            <input type="password" id="confirm_password" name="confirm_password">
+        </p>
+
+        <!-- Choix du système d'exploitation préféré -->
+        <p>OS préféré :</p>
+        <p>
+            <input type="radio" id="windows_xp" name="os" value="Windows XP">
+            <label for="windows_xp">Windows XP</label><br>
+            
+            <input type="radio" id="windows_vista" name="os" value="Windows Vista">
+            <label for="windows_vista">Windows Vista</label><br>
+            
+            <input type="radio" id="macos" name="os" value="MacOS X">
+            <label for="macos">MacOS X</label><br>
+            
+            <input type="radio" id="linux" name="os" value="Linux">
+            <label for="linux">Linux</label><br>
+            
+            <input type="radio" id="other" name="os" value="Autre">
+            <label for="other">Autre</label>
+        </p>
+
+        <!-- Matériel possédé -->
+        <p>Vous possédez :</p>
+        <p>
+            <input type="checkbox" id="desktop" name="hardware" value="desktop">
+            <label for="desktop">Un ordinateur de bureau</label><br>
+            
+            <input type="checkbox" id="laptop" name="hardware" value="laptop">
+            <label for="laptop">Un portable</label><br>
+            
+            <input type="checkbox" id="netbook" name="hardware" value="netbook">
+            <label for="netbook">Un netbook</label><br>
+            
+            <input type="checkbox" id="tablet" name="hardware" value="tablet">
+            <label for="tablet">Une tablette (Pad)</label>
+        </p>
+
+        <!-- Sélection de la profession -->
+        <p>
+            <label for="profession">Votre profession :</label>
+            <select id="profession" name="profession" size="6">
+                <option value="chomeur">Chômeur</option>
+                <option value="etudiant">Étudiant</option>
+                <option value="fonctionnaire">Fonctionnaire</option>
+                <option value="prive">Privé</option>
+                <option value="retraite">Retraité</option>
+            </select>
+        </p>
+
+        <!-- Bouton de soumission -->
+        <p>
+            <button type="submit">S'inscrire !</button>
+        </p>
+    </form>
+</body>
+</html>

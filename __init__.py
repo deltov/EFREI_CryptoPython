@@ -37,17 +37,17 @@ def ex1():
     return render_template('exercice1.html') 
 
 @app.route('/Exercice2')
-def ex1():
+def ex2():
     return render_template('exercice2.html') 
 
 @app.route('/Exercice3')
-def ex1():
+def ex3():
     return render_template('exercice3.html') 
 
 @app.route('/Exercice4')
-def ex1():
+def ex4():
     return render_template('exercice4.html') 
 
 @app.route('/Exercice5')
-def ex1():
+def ex5():
     return render_template('exercice5.html') 

@@ -35,3 +35,19 @@ if __name__ == "__main__":
 @app.route('/Exercice1')
 def ex1():
     return render_template('exercice1.html') 
+
+@app.route('/Exercice2')
+def ex1():
+    return render_template('exercice2.html') 
+
+@app.route('/Exercice3')
+def ex1():
+    return render_template('exercice3.html') 
+
+@app.route('/Exercice4')
+def ex1():
+    return render_template('exercice4.html') 
+
+@app.route('/Exercice5')
+def ex1():
+    return render_template('exercice5.html') 

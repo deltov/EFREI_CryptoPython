@@ -31,3 +31,7 @@ def decryptage(token):
                                                                                                                                                      
 if __name__ == "__main__":
   app.run(debug=True)
+
+@app.route('/Exercice1')
+def ex1():
+    return render_template('exercice1.html') 

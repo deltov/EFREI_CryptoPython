@@ -63,3 +63,7 @@ def site():
 @app.route('/maison')
 def maison():
     return render_template('maison.html')
+
+@app.route('/baptiste')
+def baptiste():
+    return render_template('baptiste.svj')

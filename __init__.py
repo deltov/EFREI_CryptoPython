@@ -60,3 +60,6 @@ def acu():
 def site():
     return render_template('site.html')
 
+@app.route('/maison')
+def maison():
+    return render_template('maison.html')

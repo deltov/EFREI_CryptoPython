@@ -55,4 +55,8 @@ def som():
 @app.route('/accueil')
 def acu():
     return render_template('accueil.html')
+  
+@app.route('/site')
+def site():
+    return render_template('site.html')
 

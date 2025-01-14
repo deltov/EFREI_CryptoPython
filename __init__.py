@@ -67,3 +67,7 @@ def maison():
 @app.route('/baptiste')
 def baptiste():
     return render_template('baptiste.svg')
+
+@app.route('/chenille')
+def chenille():
+    return render_template('chenille.html')

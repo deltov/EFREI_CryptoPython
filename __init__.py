@@ -79,4 +79,4 @@ def dée():
 
 @app.route('/outils')
 def outils():
-    return send_from_directory('static', 'Outils_JS.html')
+    return render_template('Outils_JS.html')

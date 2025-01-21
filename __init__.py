@@ -2,6 +2,7 @@ from cryptography.fernet import Fernet
 from flask import Flask, render_template_string, render_template, jsonify
 from flask import render_template
 from flask import json
+from flask import send_from_directory
 from urllib.request import urlopen
 import sqlite3
                                                                                                                                        
@@ -78,4 +79,4 @@ def dée():
 
 @app.route('/outils')
 def outils():
-    return render_template('Outils_JS.html')
+    return send_from_directory('static', 'Outils_JS.html')

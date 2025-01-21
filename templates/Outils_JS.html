@@ -12,9 +12,9 @@
 <button onclick="displayImages()">Afficher</button>
 
 <div>
-    <img id="img1" src="/static/images/img.jpg" alt="Logo 1">
-    <img id="img2" src="/static/images/img2.jpg" alt="Logo 2">
-    <img id="img3" src="/static/images/img3.jpg" alt="Logo 3">
+    <img src="{{ url_for('static', filename='images/img.jpg') }}" alt="Logo">
+    <img src="{{ url_for('static', filename='images/img2.jpg') }}" alt="Logo">
+    <img src="{{ url_for('static', filename='images/img3.jpg') }}" alt="Logo">
 </div>
 
 <script>

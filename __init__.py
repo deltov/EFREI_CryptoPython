@@ -75,3 +75,7 @@ def chenille():
 @app.route('/dee')
 def dée():
     return render_template('Jeu_Des_Base.html')
+
+@app.route('/outils')
+def outils():
+    return render_template('Outils_JS.html')

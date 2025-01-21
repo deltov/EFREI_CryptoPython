@@ -72,6 +72,6 @@ def baptiste():
 def chenille():
     return render_template('chenille.html')
 
-@app.route('/dée')
+@app.route('/dee')
 def dée():
     return render_template('Jeu_Des_Base.html')

@@ -86,6 +86,7 @@
             console.log("Balle chargée dans la chambre :", index + 1); 
         }
 
+        // Faire tourner le barillet
         function tournerBarillet(callback) {
             spinning = true;
             const svg = document.querySelector("svg");
@@ -138,18 +139,19 @@
                 }, 1000);
 
                 if (tir) {
-                    chargerBalle(); 
+                    chargerBalle();
                 }
             });
         }
 
         function afficherNumeroChambre(numero) {
             alert(`Chambre numéro ${numero}`);
+            document.getElementById(`Br${numero}`).style.fill = "red";
         }
 
         window.onload = function() {
             chargerBalle();
-		
+
             for (let i = 1; i <= 6; i++) {
                 document.getElementById(`Br${i}`).addEventListener("click", () => afficherNumeroChambre(i));
             }

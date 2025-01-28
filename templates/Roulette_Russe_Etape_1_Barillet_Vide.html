@@ -78,6 +78,7 @@
     <script>
         let barillet = [false, false, false, false, false, false];
         let spinning = false;
+        let selectedChamber = null;
 
         function chargerBalle() {
             const index = Math.floor(Math.random() * 6);
@@ -86,6 +87,7 @@
             console.log("Balle chargée dans la chambre :", index + 1); 
         }
 
+        // Faire tourner le barillet
         function tournerBarillet(callback) {
             spinning = true;
             const svg = document.querySelector("svg");
@@ -123,23 +125,11 @@
                     }
                 }
 
-                const message = document.createElement("div");
-                message.style.position = "absolute";
-                message.style.top = "50%";
-                message.style.left = "50%";
-                message.style.transform = "translate(-50%, -50%)";
-                message.style.fontSize = "24px";
-                message.style.fontWeight = "bold";
-                message.style.color = tir ? "red" : "green";
-                message.textContent = tir 
-                    ? `Boum ! Vous avez perdu ! (Chiffre: ${chiffreAleatoire})` 
-                    : `Clic ! Vous avez survécu cette fois-ci... (Chiffre: ${chiffreAleatoire})`;
-                message.classList.add("fade");
-                document.body.appendChild(message);
-
-                setTimeout(() => {
-                    message.remove();
-                }, 1000);
+                if (document.getElementById(`Br${chiffreAleatoire}`).style.fill === "red") {
+                    alert(`Perdu ! Le chiffre ${chiffreAleatoire} correspond à une chambre rouge.`);
+                } else {
+                    alert(`Gagné ! Le chiffre ${chiffreAleatoire} correspond à une chambre grise.`);
+                }
 
                 if (tir) {
                     chargerBalle(); 
@@ -149,7 +139,9 @@
 
         function afficherNumeroChambre(numero) {
             alert(`Chambre numéro ${numero}`);
-            document.getElementById(`Br${numero}`).style.fill = "red";
+            const chambre = document.getElementById(`Br${numero}`);
+            chambre.style.fill = "red";
+            selectedChamber = numero;
         }
 
         window.onload = function() {

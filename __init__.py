@@ -80,3 +80,8 @@ def dée():
 @app.route('/outils')
 def outils():
     return render_template('Outils_JS.html')
+
+
+@app.route('/roulette')
+def roulette():
+    return render_template('Roulette_Russe_Etape_1_Barillet_Vide.html')

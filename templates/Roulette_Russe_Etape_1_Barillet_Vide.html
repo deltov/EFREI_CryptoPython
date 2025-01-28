@@ -1,28 +1,175 @@
-</html>
+<!DOCTYPE html>
+<html lang="fr">
 <head>
-<script>
-function lancer(){
-          alert("le barillet tourne");
-}
-</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roulette Russe</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: white;
+            color: black;
+        }
 
+        h1 {
+            margin-top: 20px;
+        }
 
+        svg {
+            margin-top: 20px;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #007BFF;
+            color: white;
+            transition: transform 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+            transform: scale(1.1);
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes flash {
+            0% {
+                fill: gray;
+            }
+            50% {
+                fill: yellow;
+            }
+            100% {
+                fill: gray;
+            }
+        }
+
+        @keyframes fade {
+            0% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+
+        .flash {
+            animation: flash 0.5s linear 3;
+        }
+
+        .fade {
+            animation: fade 1s linear;
+        }
+    </style>
+    <script>
+        let barillet = [false, false, false, false, false, false];
+        let spinning = false;
+
+        function chargerBalle() {
+            const index = Math.floor(Math.random() * 6);
+            barillet = [false, false, false, false, false, false];
+            barillet[index] = true;
+            console.log("Balle chargée dans la chambre :", index + 1); 
+        }
+
+        function tournerBarillet(callback) {
+            spinning = true;
+            const svg = document.querySelector("svg");
+            svg.style.transition = "transform 1s ease-out";
+            const rotations = Math.floor(Math.random() * 6); 
+            for (let i = 0; i < rotations; i++) {
+                barillet.unshift(barillet.pop()); 
+            }
+            svg.style.transform = `rotate(${360 * rotations}deg)`;
+
+            setTimeout(() => {
+                spinning = false;
+                callback();
+            }, 1000);
+        }
+
+        function lancer() {
+            if (spinning) return;
+
+            tournerBarillet(() => {
+                const tir = barillet[0];
+
+                for (let i = 0; i < 6; i++) {
+                    const cercle = document.getElementById(`Br${i + 1}`);
+                    if (i === 0 && tir) {
+                        cercle.setAttribute("fill", "red");
+                        cercle.classList.add("flash");
+                        setTimeout(() => {
+                            cercle.classList.remove("flash");
+                        }, 1500);
+                    } else {
+                        cercle.setAttribute("fill", "gray");
+                    }
+                }
+
+                const message = document.createElement("div");
+                message.style.position = "absolute";
+                message.style.top = "50%";
+                message.style.left = "50%";
+                message.style.transform = "translate(-50%, -50%)";
+                message.style.fontSize = "24px";
+                message.style.fontWeight = "bold";
+                message.style.color = tir ? "red" : "green";
+                message.textContent = tir ? "Boum ! Vous avez perdu !" : "Clic ! Vous avez survécu cette fois-ci...";
+                message.classList.add("fade");
+                document.body.appendChild(message);
+
+                setTimeout(() => {
+                    message.remove();
+                }, 1000);
+
+                if (tir) {
+                    chargerBalle(); 
+                }
+            });
+        }
+
+        function afficherNumeroChambre(numero) {
+            alert(`Chambre numéro ${numero}`);
+        }
+
+        window.onload = function() {
+            chargerBalle();
+		
+            for (let i = 1; i <= 6; i++) {
+                document.getElementById(`Br${i}`).addEventListener("click", () => afficherNumeroChambre(i));
+            }
+        }
+    </script>
 </head>
 <body>
-	<h1>Roulette Russe</h1>
+    <h1>Roulette Russe</h1>
 
-	<svg width=200 height=200 style="background-color:antiquewhite">
-	<circle cx="100" cy="100" r="95" stroke="black" stroke-width="3" fill="none" />
-	<circle id="Br1" cx="100" cy="40" r="25" stroke="black" stroke-width="3" fill="gray" />
-	<circle id="Br2" cx="150" cy="70" r="25" stroke="black" stroke-width="3" fill="gray" />
-	<circle id="Br3" cx="50" cy="70" r="25" stroke="black" stroke-width="3" fill="gray" />
-	<circle id="Br4" cx="50" cy="130" r="25" stroke="black" stroke-width="3" fill="gray" />
-	<circle id="Br5" cx="150" cy="130" r="25" stroke="black" stroke-width="3" fill="gray" />
-	<circle id="Br6" cx="100" cy="160" r="25" stroke="black" stroke-width="3" fill="gray" />
-	<circle cx="100" cy="100" r="10" stroke="black" stroke-width="3" fill="black" />
-	</svg>	
-	
-	<button onclick="lancer()">Jouer</button>	
-	
+    <svg width="200" height="200" style="transition: transform 1s ease;">
+        <circle cx="100" cy="100" r="95" stroke="black" stroke-width="3" fill="none" />
+        <circle id="Br1" cx="100" cy="40" r="25" stroke="black" stroke-width="3" fill="gray" />
+        <circle id="Br2" cx="150" cy="70" r="25" stroke="black" stroke-width="3" fill="gray" />
+        <circle id="Br3" cx="150" cy="130" r="25" stroke="black" stroke-width="3" fill="gray" />
+        <circle id="Br4" cx="100" cy="160" r="25" stroke="black" stroke-width="3" fill="gray" />
+        <circle id="Br5" cx="50" cy="130" r="25" stroke="black" stroke-width="3" fill="gray" />
+        <circle id="Br6" cx="50" cy="70" r="25" stroke="black" stroke-width="3" fill="gray" />
+        <circle cx="100" cy="100" r="10" stroke="black" stroke-width="3" fill="black" />
+    </svg>    
+
+    <button onclick="lancer()">Jouer</button>
 </body>
 </html>

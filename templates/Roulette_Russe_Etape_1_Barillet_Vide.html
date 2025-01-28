@@ -7,166 +7,153 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            flex-direction: column;
             text-align: center;
-            background-color: white;
-            color: black;
-        }
-
-        h1 {
-            margin-top: 20px;
         }
 
         svg {
-            margin-top: 20px;
+            cursor: pointer;
+        }
+
+        .circle {
+            transition: fill 0.3s ease;
+        }
+
+        .circle.selected {
+            fill: red;
+        }
+
+        .circle.blue {
+            fill: blue;
         }
 
         button {
-            margin-top: 20px;
             padding: 10px 20px;
             font-size: 16px;
+            background-color: #007bff;
+            color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            background-color: #007BFF;
-            color: white;
-            transition: transform 0.2s ease;
+            margin-top: 20px;
         }
 
         button:hover {
             background-color: #0056b3;
-            transform: scale(1.1);
         }
 
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
+        #statusMessage {
+            margin-top: 20px;
+            font-weight: bold;
         }
 
-        @keyframes flash {
-            0% {
-                fill: gray;
-            }
-            50% {
-                fill: yellow;
-            }
-            100% {
-                fill: gray;
-            }
-        }
-
-        @keyframes fade {
-            0% {
-                opacity: 1;
-            }
-            100% {
-                opacity: 0;
-            }
-        }
-
-        .flash {
-            animation: flash 0.5s linear 3;
-        }
-
-        .fade {
-            animation: fade 1s linear;
+        #winnings {
+            margin-top: 10px;
+            font-size: 20px;
+            font-weight: bold;
         }
     </style>
+
     <script>
-        let barillet = [false, false, false, false, false, false];
-        let spinning = false;
-        let selectedChamber = null;
+        let selectedChambers = [];
+        let totalWinnings = 0;
 
-        function chargerBalle() {
-            const index = Math.floor(Math.random() * 6);
-            barillet = [false, false, false, false, false, false];
-            barillet[index] = true;
-            console.log("Balle chargée dans la chambre :", index + 1); 
-        }
+        function selectChamber(chamberId) {
+            const chamber = document.getElementById(chamberId);
 
-        // Faire tourner le barillet
-        function tournerBarillet(callback) {
-            spinning = true;
-            const svg = document.querySelector("svg");
-            svg.style.transition = "transform 1s ease-out";
-            const rotations = Math.floor(Math.random() * 6); 
-            for (let i = 0; i < rotations; i++) {
-                barillet.unshift(barillet.pop()); 
+            if (chamber.classList.contains("selected")) {
+                chamber.classList.remove("selected");
+                selectedChambers = selectedChambers.filter(id => id !== chamberId);
+            } else {
+                if (selectedChambers.length < 3) {
+                    chamber.classList.add("selected");
+                    selectedChambers.push(chamberId);
+                } else {
+                    alert("Vous ne pouvez sélectionner que 3 chambres maximum.");
+                }
             }
-            svg.style.transform = `rotate(${360 * rotations}deg)`;
-
-            setTimeout(() => {
-                spinning = false;
-                callback();
-            }, 1000);
         }
 
         function lancer() {
-            if (spinning) return;
-
-            tournerBarillet(() => {
-                const tir = barillet[0];
-
-                const chiffreAleatoire = Math.floor(Math.random() * 6) + 1;
-
-                for (let i = 0; i < 6; i++) {
-                    const cercle = document.getElementById(`Br${i + 1}`);
-                    if (i === 0 && tir) {
-                        cercle.setAttribute("fill", "red");
-                        cercle.classList.add("flash");
-                        setTimeout(() => {
-                            cercle.classList.remove("flash");
-                        }, 1500);
-                    } else {
-                        cercle.setAttribute("fill", "gray");
-                    }
-                }
-
-                if (document.getElementById(`Br${chiffreAleatoire}`).style.fill === "red") {
-                    alert(`Perdu ! Le chiffre ${chiffreAleatoire} correspond à une chambre rouge.`);
-                } else {
-                    alert(`Gagné ! Le chiffre ${chiffreAleatoire} correspond à une chambre grise.`);
-                }
-
-                if (tir) {
-                    chargerBalle(); 
-                }
-            });
-        }
-
-        function afficherNumeroChambre(numero) {
-            alert(`Chambre numéro ${numero}`);
-            const chambre = document.getElementById(`Br${numero}`);
-            chambre.style.fill = "red";
-            selectedChamber = numero;
-        }
-
-        window.onload = function() {
-            chargerBalle();
-
-            for (let i = 1; i <= 6; i++) {
-                document.getElementById(`Br${i}`).addEventListener("click", () => afficherNumeroChambre(i));
+            if (selectedChambers.length === 0) {
+                alert("Sélectionnez au moins une chambre.");
+                return;
             }
+
+            const allChambers = document.querySelectorAll(".circle");
+            allChambers.forEach(chamber => chamber.classList.remove("blue"));
+
+            const randomIndex = Math.floor(Math.random() * 6);
+            const randomChamber = document.getElementById("Br" + (randomIndex + 1));
+            randomChamber.classList.add("blue");
+
+            const isLoss = selectedChambers.includes("Br" + (randomIndex + 1));
+
+            let winnings = 0;
+            if (isLoss) {
+                document.getElementById("statusMessage").textContent = "Perdu ! La balle bleue a touché une chambre rouge.";
+                winnings = 0;
+            } else {
+                document.getElementById("statusMessage").textContent = "Gagné ! La balle bleue a touché une chambre grise.";
+
+                if (selectedChambers.length === 1) {
+                    winnings = 10000;
+                } else if (selectedChambers.length === 2) {
+                    winnings = 100000;
+                } else if (selectedChambers.length === 3) {
+                    winnings = 1000000;
+                }
+            }
+
+            totalWinnings += winnings;
+            document.getElementById("winnings").textContent = `Gains cumulés: ${totalWinnings}€`;
+
+            if (!document.querySelector("#replayButton")) {
+                const resetButton = document.createElement("button");
+                resetButton.id = "replayButton";
+                resetButton.textContent = "Rejouer";
+                resetButton.onclick = () => {
+                    resetGame();
+                    resetButton.remove();
+                };
+                document.body.appendChild(resetButton);
+            }
+        }
+
+        function resetGame() {
+            selectedChambers = [];
+            const allChambers = document.querySelectorAll(".circle");
+            allChambers.forEach(chamber => chamber.classList.remove("selected", "blue"));
+
+            document.getElementById("statusMessage").textContent = "Sélectionnez jusqu'à 3 chambres pour placer vos balles.";
+            document.getElementById("winnings").textContent = `Gains cumulés: ${totalWinnings}€`;
         }
     </script>
 </head>
 <body>
+
     <h1>Roulette Russe</h1>
 
-    <svg width="200" height="200" style="transition: transform 1s ease;">
+    <svg width="200" height="200" style="background-color: antiquewhite">
         <circle cx="100" cy="100" r="95" stroke="black" stroke-width="3" fill="none" />
-        <circle id="Br1" cx="100" cy="40" r="25" stroke="black" stroke-width="3" fill="gray" />
-        <circle id="Br2" cx="150" cy="70" r="25" stroke="black" stroke-width="3" fill="gray" />
-        <circle id="Br3" cx="150" cy="130" r="25" stroke="black" stroke-width="3" fill="gray" />
-        <circle id="Br4" cx="100" cy="160" r="25" stroke="black" stroke-width="3" fill="gray" />
-        <circle id="Br5" cx="50" cy="130" r="25" stroke="black" stroke-width="3" fill="gray" />
-        <circle id="Br6" cx="50" cy="70" r="25" stroke="black" stroke-width="3" fill="gray" />
+        <circle id="Br1" class="circle" cx="100" cy="40" r="25" stroke="black" stroke-width="3" fill="gray" onclick="selectChamber('Br1')" />
+        <circle id="Br2" class="circle" cx="150" cy="70" r="25" stroke="black" stroke-width="3" fill="gray" onclick="selectChamber('Br2')" />
+        <circle id="Br3" class="circle" cx="50" cy="70" r="25" stroke="black" stroke-width="3" fill="gray" onclick="selectChamber('Br3')" />
+        <circle id="Br4" class="circle" cx="50" cy="130" r="25" stroke="black" stroke-width="3" fill="gray" onclick="selectChamber('Br4')" />
+        <circle id="Br5" class="circle" cx="150" cy="130" r="25" stroke="black" stroke-width="3" fill="gray" onclick="selectChamber('Br5')" />
+        <circle id="Br6" class="circle" cx="100" cy="160" r="25" stroke="black" stroke-width="3" fill="gray" onclick="selectChamber('Br6')" />
         <circle cx="100" cy="100" r="10" stroke="black" stroke-width="3" fill="black" />
-    </svg>    
+    </svg>
 
     <button onclick="lancer()">Jouer</button>
+
+    <p id="statusMessage">Sélectionnez jusqu'à 3 chambres pour placer vos balles.</p>
+    <p id="winnings">Gains cumulés: 0€</p>
+
 </body>
 </html>

@@ -86,7 +86,6 @@
             console.log("Balle chargée dans la chambre :", index + 1); 
         }
 
-        // Faire tourner le barillet
         function tournerBarillet(callback) {
             spinning = true;
             const svg = document.querySelector("svg");
@@ -109,6 +108,8 @@
             tournerBarillet(() => {
                 const tir = barillet[0];
 
+                const chiffreAleatoire = Math.floor(Math.random() * 6) + 1;
+
                 for (let i = 0; i < 6; i++) {
                     const cercle = document.getElementById(`Br${i + 1}`);
                     if (i === 0 && tir) {
@@ -130,7 +131,9 @@
                 message.style.fontSize = "24px";
                 message.style.fontWeight = "bold";
                 message.style.color = tir ? "red" : "green";
-                message.textContent = tir ? "Boum ! Vous avez perdu !" : "Clic ! Vous avez survécu cette fois-ci...";
+                message.textContent = tir 
+                    ? `Boum ! Vous avez perdu ! (Chiffre: ${chiffreAleatoire})` 
+                    : `Clic ! Vous avez survécu cette fois-ci... (Chiffre: ${chiffreAleatoire})`;
                 message.classList.add("fade");
                 document.body.appendChild(message);
 
@@ -139,7 +142,7 @@
                 }, 1000);
 
                 if (tir) {
-                    chargerBalle();
+                    chargerBalle(); 
                 }
             });
         }
